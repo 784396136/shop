@@ -1,7 +1,15 @@
 namespace models;
 
-class <?=$mname?>
+class <?=ucfirst($tableName)?> extends Db
 {
+    //取出所有数据
+    public function getAll()
+    {
+        $stmt = self::$_pdo->query("SELECT * FROM <?=$tableName?>");
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
     //插入数据
     public function insert()
     {
