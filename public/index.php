@@ -15,6 +15,7 @@ spl_autoload_register('load');
 
 // 解析路由
 $controller = "controllers\IndexController";
+$active = 'index';
 if(isset($_SERVER['PATH_INFO']))
 {
     $router = explode("/",$_SERVER['PATH_INFO']);

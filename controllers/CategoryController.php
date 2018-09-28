@@ -1,20 +1,20 @@
+<?php
 namespace controllers;
-use models\<?=$mname?>;
+use models\Category;
 
-class <?=$cname?>
-{
+class CategoryController{
     // 列表页
     public function index()
     {
-        $model = new <?=$mname?>;
+        $model = new Category;
         $res = $model->findAll();
-        view('<?=$tableName?>/index',$res);
+        view('category/index',$res);
     }
 
     // 显示添加的表单
     public function create()
     {
-        view('<?=$tableName?>/create');
+        view('category/create');
     }
 
     // 处理添加表单
@@ -26,7 +26,7 @@ class <?=$cname?>
     // 显示修改的表单
     public function edit()
     {
-        view('<?=$tableName?>/edit');
+        view('category/edit');
     }
 
     // 修改表单的方法

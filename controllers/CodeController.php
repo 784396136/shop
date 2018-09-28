@@ -6,8 +6,28 @@ class CodeController
     public function make()
     {
         $tableName = $_GET['name'];
+        $mname = ucfirst($tableName);
         // 拼出控制器名称
         $cname = ucfirst($tableName)."Controller";
+
+        // 取出表中的所有字段的名称 类型 注释
+        // $sql = "select column_name name,column_comment comment,data_type type  from information_schema.columns where table_schema = 'shop'  and table_name = '$tableName'";
+        $sql = "SHOW FULL FIELDS FROM $tableName";
+        $db = \libs\Db::make();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll( \PDO::FETCH_ASSOC );
+        // echo "<pre>";
+        // var_dump($data);
+        // die;
+        $fillable = [];
+        foreach($data as $v)
+        {
+            if($v['Field']=='id' || $v['Field']=='created_at')
+                continue;
+            $fillable[] = $v['Field'];
+        }
+        $fillable = implode("','", $fillable);
 
         // 加载模板 创建控制器
         ob_start();

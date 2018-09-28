@@ -1,20 +1,20 @@
+<?php
 namespace controllers;
-use models\<?=$mname?>;
+use models\Blog;
 
-class <?=$cname?>
-{
+class BlogController{
     // 列表页
     public function index()
     {
-        $model = new <?=$mname?>;
+        $model = new Blog;
         $res = $model->findAll();
-        view('<?=$tableName?>/index',$res);
+        view('blog/index',$res);
     }
 
     // 显示添加的表单
     public function create()
     {
-        view('<?=$tableName?>/create');
+        view('blog/create');
     }
 
     // 处理添加表单
@@ -26,7 +26,7 @@ class <?=$cname?>
     // 显示修改的表单
     public function edit()
     {
-        view('<?=$tableName?>/edit');
+        view('blog/edit');
     }
 
     // 修改表单的方法

@@ -1,5 +1,5 @@
 <?php
-namespace models;
+namespace libs;
 
 class DB
 {
@@ -16,5 +16,17 @@ class DB
         if(self::$_obj===null)
         self::$_obj = new self;
         return self::$_obj;
+    }
+
+    // 预处理
+    public function prepare($sql)
+    {
+        return $this->_pdo->prepare($sql);
+    }
+
+    // 非预处理
+    public function exec($sql)
+    {
+        return $this->_pdo->exec($sql);
     }
 }
