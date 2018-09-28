@@ -6,6 +6,15 @@ namespace models;
  */
 class model
 {
+
+    /**
+     * 设置钩子函数
+     */
+    protected function _before_write(){}
+    protected function _after_write(){}
+    protected function _before_delete(){}
+    protected function _after_delete(){}
+
     // 设置表名
     protected $table;
     // 将提交表单中接收到的数据设置到改属性上
@@ -20,28 +29,66 @@ class model
     // 接收表单中的数据
     public function fill($data)
     {
+        // echo "<pre>";
+        // var_dump($data);die;
         $this->data = $data;
+    }
+
+    public function delete($id)
+    {
+        $this->_before_delete();
+        $sql = "DELETE FROM {$this->table} WHERE id = ?";
+        $stmt = $this->_db->prepare($sql);
+        $stmt -> execute([$id]);
+        $this->_after_delete();
+    }
+
+    // 更新数据
+    public function update($id)
+    {
+        $this->_before_write();
+        $set = [];
+        $values = [];
+        foreach($this->data as $k => $v)
+        {
+            $set[] = "$k=?";
+            $values[] = $v;
+        }
+        $set = implode(',',$set);
+        $values[] = $id;
+        $sql = "UPDATE {$this->table} SET $set WHERE id = ?";
+        // echo "<pre>";
+        // var_dump($sql,$values);die;
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute($values);
+        $this->_after_write();
     }
 
     public function insert()
     {
+        $this->_before_write();
+
         $keys = [];
         $values = [];
         $token = [];
-
+        // echo "<pre>";
+        // var_dump($this->data);die;
         foreach($this->data as $k=>$v)
         {
             $keys[] = $k;
             $values[] = $v;
             $token[] = '?';
         }
-        $keys = implode(',',$k);
+        $keys = implode(',',$keys);
         $token = implode(',',$token);
 
         $sql = "INSERT INTO {$this->table}($keys) VALUES($token)";
+        // var_dump($sql,$values);die;
+        $stmt = $this->_db->prepare($sql);
+        // var_dump($this->data);die;
+        $stmt->execute($values); 
 
-        $stmt = $this->_db->perpare($sql);
-        return $stmt->execute($values); 
+        $this->_after_write();
     }
 
     public function findAll( $options=[] )
