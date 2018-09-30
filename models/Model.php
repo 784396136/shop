@@ -31,6 +31,11 @@ class model
     {
         // echo "<pre>";
         // var_dump($data);die;
+        foreach($data as $k => $v)
+        {
+            if(!in_array($k,$this->fillable))
+                unset($data[$k]);
+        }
         $this->data = $data;
     }
 
@@ -71,7 +76,7 @@ class model
         $keys = [];
         $values = [];
         $token = [];
-        // echo "<pre>";
+        echo "<pre>";
         // var_dump($this->data);die;
         foreach($this->data as $k=>$v)
         {
@@ -83,10 +88,11 @@ class model
         $token = implode(',',$token);
 
         $sql = "INSERT INTO {$this->table}($keys) VALUES($token)";
-        // var_dump($sql,$values);die;
+        var_dump($keys,$values);
         $stmt = $this->_db->prepare($sql);
         // var_dump($this->data);die;
         $stmt->execute($values); 
+        $this->data['id'] = $this->_db->lastInsertId();
 
         $this->_after_write();
     }

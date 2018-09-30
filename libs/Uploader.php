@@ -83,7 +83,6 @@ class Uploader
 
     private function _checkType()
     {
-        var_dump($this->_file['type']);
         return in_array($this->_file['type'], $this->_ext);
     }
 

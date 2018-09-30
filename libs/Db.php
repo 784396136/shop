@@ -29,4 +29,10 @@ class DB
     {
         return $this->_pdo->exec($sql);
     }
+
+    // 获取新插入的记录ID
+    public function lastInsertId()
+    {
+        return $this->_pdo->lastInsertId();
+    }
 }

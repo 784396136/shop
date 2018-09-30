@@ -7,4 +7,11 @@ class Category extends Model
     protected $table = 'category';
     // 设置允许接收的字段
     protected $fillable = ['cat_name','parent_id','path']; 
+
+    public function getCat($parent_id=0)
+    {
+        return $this->findAll([
+            'where' => "parent_id=$parent_id",
+        ]);
+    }
 }
